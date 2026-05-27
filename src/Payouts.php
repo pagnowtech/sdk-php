@@ -20,8 +20,11 @@ final class Payouts
     /**
      * Request a payout. Validates funds + PIX key server-side.
      *
+     * Omit `walletId` to auto-select the wallet (currency default, else any
+     * spendable wallet with balance); pass it to debit a specific wallet.
+     *
      * @param array{
-     *   type:string, amount:int, currency?:string,
+     *   type:string, amount:int, currency?:string, walletId?:string,
      *   pixKey?:string, pixKeyType?:string, bankCode?:string, bankAgency?:string, bankAccount?:string,
      *   cryptoAddress?:string, cryptoNetwork?:string, cryptoCurrency?:string
      * } $input

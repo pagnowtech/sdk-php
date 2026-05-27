@@ -13,7 +13,7 @@ composer require pagnow/sdk-php
 use Pagnow\PagNow;
 
 // The apikey identifies your tenant — no tenantId needed.
-// baseUrl defaults to https://api.pagnow.com (use https://v2.pagnow.com today).
+// baseUrl defaults to https://v2.pagnow.com (the live API host).
 $pagnow = new PagNow(['apiKey' => getenv('PAGNOW_API_KEY')]);
 
 $charge = $pagnow->payments->create([

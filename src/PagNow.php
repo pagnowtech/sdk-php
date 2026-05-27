@@ -38,7 +38,7 @@ final class PagNow
             throw new \InvalidArgumentException('PagNow: apiKey is required');
         }
         $this->apiKey = $opts['apiKey'];
-        $this->baseUrl = rtrim($opts['baseUrl'] ?? 'https://api.pagnow.com', '/');
+        $this->baseUrl = rtrim($opts['baseUrl'] ?? 'https://v2.pagnow.com', '/');
         $this->timeoutMs = $opts['timeoutMs'] ?? 30000;
         $this->maxRetries = $opts['maxRetries'] ?? 3;
         $this->payments = new Payments($this);

@@ -22,6 +22,7 @@ use Pagnow\Exceptions\PagNowValidationException;
 final class PagNow
 {
     public readonly Payments $payments;
+    public readonly Payouts $payouts;
     public readonly Webhooks $webhooks;
 
     private readonly string $apiKey;
@@ -42,6 +43,7 @@ final class PagNow
         $this->timeoutMs = $opts['timeoutMs'] ?? 30000;
         $this->maxRetries = $opts['maxRetries'] ?? 3;
         $this->payments = new Payments($this);
+        $this->payouts = new Payouts($this);
         $this->webhooks = new Webhooks();
     }
 

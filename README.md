@@ -36,6 +36,28 @@ $pagnow->payments->refund($charge['id'], ['idempotencyKey' => "refund-{$charge['
 $pagnow->payments->cancel($charge['id']);
 ```
 
+## Payouts (withdrawals)
+
+Move money **out** of your wallet to a PIX key, bank account, or crypto address.
+
+```php
+$payout = $pagnow->payouts->create([
+    'type' => 'PIX',
+    'amount' => 10000,            // cents
+    'currency' => 'BRL',
+    'pixKey' => 'joao@exemplo.com',
+    'pixKeyType' => 'EMAIL',
+]);
+
+$pagnow->payouts->retrieve($payout['id']);
+$pagnow->payouts->list(['status' => 'PENDING']);
+```
+
+A payout starts as `PENDING`. Whether it dispatches **immediately** or waits for
+**manual review** is controlled per-account by PagNow (the "auto-payout"
+setting — ask your account manager to enable it). Track the outcome with the
+`withdrawal.*` webhook events or by polling `retrieve()`.
+
 ## Webhooks
 
 ```php

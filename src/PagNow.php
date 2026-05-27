@@ -23,6 +23,7 @@ final class PagNow
 {
     public readonly Payments $payments;
     public readonly Payouts $payouts;
+    public readonly Wallets $wallets;
     public readonly Webhooks $webhooks;
 
     private readonly string $apiKey;
@@ -44,6 +45,7 @@ final class PagNow
         $this->maxRetries = $opts['maxRetries'] ?? 3;
         $this->payments = new Payments($this);
         $this->payouts = new Payouts($this);
+        $this->wallets = new Wallets($this);
         $this->webhooks = new Webhooks();
     }
 

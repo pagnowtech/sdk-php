@@ -58,6 +58,22 @@ A payout starts as `PENDING`. Whether it dispatches **immediately** or waits for
 setting — ask your account manager to enable it). Track the outcome with the
 `withdrawal.*` webhook events or by polling `retrieve()`.
 
+You may hold **multiple wallets per currency**. Omit `walletId` and the payout
+debits the currency's default wallet (or any spendable wallet with balance);
+pass `walletId` to target a specific one.
+
+## Wallets
+
+```php
+$wallets = $pagnow->wallets->list();
+// → [['id' => ..., 'currency' => 'BRL', 'isDefault' => true, 'balance' => ...], ...]
+
+$pagnow->wallets->retrieve($wallets[0]['id']);
+```
+
+Balances are in the smallest currency unit (centavos). Wallet creation is
+handled by PagNow (admin); the SDK is read-only here.
+
 ## Webhooks
 
 ```php

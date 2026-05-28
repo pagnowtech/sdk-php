@@ -56,4 +56,20 @@ final class Payouts
         $qs = $query ? '?' . http_build_query($query) : '';
         return $this->client->request('GET', '/v1/withdrawals' . $qs) ?? [];
     }
+
+    /**
+     * Validate a PIX key server-side before submitting a withdrawal. The
+     * server auto-detects the key type if `type` is omitted.
+     *
+     * @param array{key:string, type?:string} $data
+     *   `type` one of CPF | CNPJ | EMAIL | PHONE | RANDOM (optional, auto-detected)
+     * @return array<string, mixed>
+     */
+    public function validatePixKey(array $data): array
+    {
+        if (empty($data['key'])) {
+            throw new \InvalidArgumentException('PagNow: payouts.validatePixKey requires key');
+        }
+        return $this->client->request('POST', '/v1/withdrawals/validate-pix-key', $data) ?? [];
+    }
 }

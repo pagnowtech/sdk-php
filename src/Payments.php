@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pagnow;
 
 /**
- * Payments resource — create / retrieve / list / refund / cancel.
+ * Payments resource — create / retrieve / list / refund / cancel / utilities.
  * Amounts are in the smallest currency unit (cents/centavos).
  */
 final class Payments
@@ -20,8 +20,11 @@ final class Payments
      *
      * @param array{
      *   amount:int, paymentMethods:list<string>, idempotencyKey:string,
-     *   currency?:string, customer?:array{name?:string,document?:string,email?:string,phone?:string},
-     *   customerId?:string, webhookUrl?:string, metadata?:array<string,mixed>
+     *   currency?:string,
+     *   customer?:array{name?:string,document?:string,email?:string,phone?:string},
+     *   customerId?:string, webhookUrl?:string, metadata?:array<string,mixed>,
+     *   items?:list<array<string,mixed>>, country?:string,
+     *   riskTier?:string, environment?:string
      * } $input
      * @return array<string, mixed>
      */
@@ -56,7 +59,7 @@ final class Payments
     }
 
     /**
-     * @param array<string, scalar> $query page/limit/status/startDate/endDate/sortBy/sortOrder
+     * @param array<string, scalar> $query page/limit/status/currency/startDate/endDate/sortBy/sortOrder
      * @return array<string, mixed>
      */
     public function list(array $query = []): array
@@ -68,7 +71,11 @@ final class Payments
     /**
      * Refund a settled transaction (full or partial). `idempotencyKey` required.
      *
-     * @param array{idempotencyKey:string, amount?:int, reason?:string, strategy?:string, passFeeToTenant?:bool, destinationKey?:string} $input
+     * @param array{
+     *   idempotencyKey:string, amount?:int, reason?:string,
+     *   refundId?:string, strategy?:string,
+     *   passFeeToTenant?:bool, destinationKey?:string
+     * } $input
      * @return array<string, mixed>
      */
     public function refund(string $id, array $input): array
@@ -93,5 +100,41 @@ final class Payments
     public function cancel(string $id): array
     {
         return $this->client->request('POST', '/v1/payments/' . rawurlencode($id) . '/cancel') ?? [];
+    }
+
+    /**
+     * Fetch the live provider-side status for a transaction.
+     * @return array<string, mixed>
+     */
+    public function providerStatus(string $id): array
+    {
+        return $this->client->request('GET', '/v1/payments/' . rawurlencode($id) . '/provider-status') ?? [];
+    }
+
+    /**
+     * Get the receipt / summary for a settled transaction.
+     * @return array<string, mixed>
+     */
+    public function receipt(string $id): array
+    {
+        return $this->client->request('GET', '/v1/payments/' . rawurlencode($id) . '/receipt') ?? [];
+    }
+
+    /**
+     * Trigger a manual reconciliation pass for a transaction.
+     * @return array<string, mixed>
+     */
+    public function reconcile(string $id): array
+    {
+        return $this->client->request('POST', '/v1/payments/' . rawurlencode($id) . '/reconcile') ?? [];
+    }
+
+    /**
+     * Re-deliver the last webhook event for a transaction.
+     * @return array<string, mixed>
+     */
+    public function resendWebhook(string $id): array
+    {
+        return $this->client->request('POST', '/v1/payments/' . rawurlencode($id) . '/resend-webhook') ?? [];
     }
 }

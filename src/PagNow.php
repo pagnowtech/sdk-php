@@ -46,7 +46,7 @@ final class PagNow
         $this->payments = new Payments($this);
         $this->payouts = new Payouts($this);
         $this->wallets = new Wallets($this);
-        $this->webhooks = new Webhooks();
+        $this->webhooks = new Webhooks($this);
     }
 
     /**

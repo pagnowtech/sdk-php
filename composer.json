@@ -4,7 +4,12 @@
   "type": "library",
   "license": "MIT",
   "keywords": ["pagnow", "payments", "pix", "sepa", "stablecoin", "stripe"],
-  "homepage": "https://pagnow.com",
+  "homepage": "https://docs.v2.pagnow.com",
+  "support": {
+    "source": "https://gitlab.zentry.cloud/pagnow/sdk-php",
+    "issues": "https://gitlab.zentry.cloud/pagnow/sdk-php/-/issues",
+    "docs": "https://docs.v2.pagnow.com"
+  },
   "require": {
     "php": ">=8.1",
     "ext-curl": "*",
